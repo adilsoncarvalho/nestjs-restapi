@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
@@ -12,23 +12,30 @@ export class OrganizationsService {
     private readonly repository: Repository<Organization>,
   ) {}
 
-  create(createOrganizationDto: CreateOrganizationDto) {
-    return 'This action adds a new organization';
+  create(createDto: CreateOrganizationDto) {
+    const organization = this.repository.create(createDto);
+    return this.repository.save(organization);
   }
 
   findAll() {
-    return `This action returns all organizations`;
+    return this.repository.find();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} organization`;
+  async findOne(id: string) {
+    const organization = await this.repository.findOne(id);
+    if (!organization)
+      throw new NotFoundException(`Organization #${id} does not exist`);
+    return organization;
   }
 
-  update(id: string, updateOrganizationDto: UpdateOrganizationDto) {
-    return `This action updates a #${id} organization`;
+  async update(id: string, updateDto: UpdateOrganizationDto) {
+    const organization = await this.repository.preload({ id, ...updateDto });
+    if (!organization)
+      throw new NotFoundException(`Organization #${id} does not exist`);
+    return this.repository.save(organization);
   }
 
   remove(id: string) {
-    return `This action removes a #${id} organization`;
+    return this.repository.softDelete(id);
   }
 }
