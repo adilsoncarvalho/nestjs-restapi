@@ -13,21 +13,21 @@ import { UpdateOrganizationDto } from './dto/update-organization.dto';
 
 @Controller('organizations')
 export class OrganizationsController {
-  constructor(private readonly organizationsService: OrganizationsService) {}
+  constructor(private readonly service: OrganizationsService) {}
 
   @Post()
   create(@Body() createOrganizationDto: CreateOrganizationDto) {
-    return this.organizationsService.create(createOrganizationDto);
+    return this.service.create(createOrganizationDto);
   }
 
   @Get()
   findAll() {
-    return this.organizationsService.findAll();
+    return this.service.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.organizationsService.findOne(+id);
+    return this.service.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class OrganizationsController {
     @Param('id') id: string,
     @Body() updateOrganizationDto: UpdateOrganizationDto,
   ) {
-    return this.organizationsService.update(+id, updateOrganizationDto);
+    return this.service.update(id, updateOrganizationDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.organizationsService.remove(+id);
+    return this.service.remove(id);
   }
 }
