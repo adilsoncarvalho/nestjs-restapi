@@ -1,4 +1,4 @@
-import { IsIn, IsNotEmpty, IsString } from 'class-validator';
+import { IsIn, IsNotEmpty, IsString, Matches } from 'class-validator';
 import { OrganizationType } from '../entities/organization.type';
 
 export class CreateOrganizationDto {
@@ -8,6 +8,7 @@ export class CreateOrganizationDto {
 
   @IsString()
   @IsNotEmpty()
+  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
   readonly slug: string;
 
   @IsString()
