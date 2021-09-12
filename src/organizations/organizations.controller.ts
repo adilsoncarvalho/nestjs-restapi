@@ -18,10 +18,7 @@ export class OrganizationsController {
   constructor(private readonly service: OrganizationsService) {}
 
   @Post()
-  create(
-    @Body(new ValidationPipe({ transform: true }))
-    createOrganizationDto: CreateOrganizationDto,
-  ) {
+  create(@Body() createOrganizationDto: CreateOrganizationDto) {
     return this.service.create(createOrganizationDto);
   }
 
@@ -38,8 +35,7 @@ export class OrganizationsController {
   @Patch(':id')
   update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body(new ValidationPipe({ transform: true }))
-    updateOrganizationDto: UpdateOrganizationDto,
+    @Body() updateOrganizationDto: UpdateOrganizationDto,
   ) {
     return this.service.update(id, updateOrganizationDto);
   }
