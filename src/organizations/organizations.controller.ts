@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  ValidationPipe,
 } from '@nestjs/common';
 import { OrganizationsService } from './organizations.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
@@ -17,7 +18,10 @@ export class OrganizationsController {
   constructor(private readonly service: OrganizationsService) {}
 
   @Post()
-  create(@Body() createOrganizationDto: CreateOrganizationDto) {
+  create(
+    @Body(new ValidationPipe({ transform: true }))
+    createOrganizationDto: CreateOrganizationDto,
+  ) {
     return this.service.create(createOrganizationDto);
   }
 
@@ -34,7 +38,8 @@ export class OrganizationsController {
   @Patch(':id')
   update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateOrganizationDto: UpdateOrganizationDto,
+    @Body(new ValidationPipe({ transform: true }))
+    updateOrganizationDto: UpdateOrganizationDto,
   ) {
     return this.service.update(id, updateOrganizationDto);
   }
